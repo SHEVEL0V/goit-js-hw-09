@@ -1,17 +1,21 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from "notiflix";
 
+const SEKOND = 1000;
 const date = new Date();
+let inputTime = null;
+
 const ref = {
   btnStart: document.querySelector("button[data-start]"),
-  dayEl: document.querySelector("span[date-days]"),
-  housEl: document.querySelector("span[date-hours]"),
-  minuteEl: document.querySelector("span[date-minutes]"),
-  secondEl: document.querySelector("span[date-seconds]"),
+  dayEl: document.querySelector("span[data-days]"),
+  hourEl: document.querySelector("span[data-hours]"),
+  minuteEl: document.querySelector("span[data-minutes]"),
+  secondEl: document.querySelector("span[data-seconds]"),
 };
 
 ref.btnStart.disabled = true;
-let time = {};
+ref.btnStart.addEventListener("click", timer);
 
 const options = {
   enableTime: true,
@@ -20,17 +24,27 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (date > selectedDates[0]) {
-      window.alert("Please choose a date in the future");
+      Notiflix.Notify.failure("Please choose a date in the future"),
+        {
+          timeout: 6000,
+        };
     } else {
       ref.btnStart.disabled = false;
-      convertMs(selectedDates[0] - date);
+      inputTime = selectedDates[0];
     }
   },
 };
-
 flatpickr("#datetime-picker", options);
 
-ref.btnStart.addEventListener("click", timer);
+function timer() {
+  setInterval(() => {
+    const d = new Date();
+    const time = inputTime - d;
+    if (time > 0) {
+      convertMs(time);
+    }
+  }, SEKOND);
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -47,8 +61,13 @@ function convertMs(ms) {
   const minutes = Math.floor(((ms % day) % hour) / minute);
   // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-  return (time = { days, hours, minutes, seconds });
+
+  return timerModelingClock(days, hours, minutes, seconds);
 }
-function timer() {
-  console.log(ref.secondEl);
+
+function timerModelingClock(days, hours, minutes, seconds) {
+  ref.secondEl.textContent = seconds.toString().padStart(2, 0);
+  ref.minuteEl.textContent = minutes.toString().padStart(2, 0);
+  ref.hourEl.textContent = hours.toString().padStart(2, 0);
+  ref.dayEl.textContent = days.toString().padStart(2, 0);
 }

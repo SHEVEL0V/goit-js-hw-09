@@ -1,6 +1,7 @@
 const btnStart = document.querySelector("button[data-start]");
 const btnStop = document.querySelector("button[data-stop]");
 const bodyEl = document.querySelector("body");
+const SECOND = 1000;
 let intervalId = null;
 
 btnStart.addEventListener("click", startMakeColor);
@@ -9,7 +10,7 @@ btnStop.addEventListener("click", stopMakeColor);
 function startMakeColor() {
   intervalId = setInterval(() => {
     bodyEl.style.backgroundColor = getRandomHexColor();
-  }, 1000);
+  }, SECOND);
   btnStart.disabled = true;
 }
 
