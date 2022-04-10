@@ -1,10 +1,15 @@
 const formEl = document.querySelector(".form");
 
-formEl.addEventListener("input", e);
+const button = formEl.elements["button"];
 
-function e(n) {
-  n.preventDefault();
-  console.dir(n);
+button.addEventListener("click", submit);
+
+function submit() {
+  const formDate = new FormData(formEl);
+  const deley = formDate.get("delay");
+  const step = formDate.get("step");
+  const amount = formDate.get("amount");
+  console.log({ deley, step, amount });
 }
 
 function createPromise(position, delay) {
