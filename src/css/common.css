@@ -37,3 +37,17 @@ img {
   font-size: 24px;
   color: blue;
 }
+
+.form{
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around
+ 
+}
+
+label{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
